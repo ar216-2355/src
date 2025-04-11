@@ -1,3 +1,0 @@
-# saito
-- jika
-- saito

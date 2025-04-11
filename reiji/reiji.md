@@ -1,2 +1,0 @@
-## reiji
-**ganbare**wa----
