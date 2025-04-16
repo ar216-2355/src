@@ -16,30 +16,30 @@ private:
     //startボタンで活動モード
     if(msg.buttons[7])
     {
-      omuni_setting_->publish(omuni::robomas_utils::to_velocity_mode(0));
-      omuni_setting_->publish(omuni::robomas_utils::to_velocity_mode(1));
-      omuni_setting_->publish(omuni::robomas_utils::to_velocity_mode(2));
+      omuni_setting_->publish(harurobo2::robomas_utils::to_velocity_mode(0));
+      omuni_setting_->publish(harurobo2::robomas_utils::to_velocity_mode(1));
+      omuni_setting_->publish(harurobo2::robomas_utils::to_velocity_mode(2));
     }
     //backボタンで停止モード
     if(msg.buttons[6])
     {
-      omuni_setting_->publish(omuni::robomas_utils::to_disable_mode(0));
-      omuni_setting_->publish(omuni::robomas_utils::to_disable_mode(1));
-      omuni_setting_->publish(omuni::robomas_utils::to_disable_mode(2));
+      omuni_setting_->publish(harurobo2::robomas_utils::to_disable_mode(0));
+      omuni_setting_->publish(harurobo2::robomas_utils::to_disable_mode(1));
+      omuni_setting_->publish(harurobo2::robomas_utils::to_disable_mode(2));
     }
 
     //オムニそれぞれの速度変数を指定
     float V1, V2, V3 = 0;
 
     //Xボタン
-    if(buttons[2])
+    if(msg.buttons[2])
     {
       V1 = 100;
       V2 = 100;
       V3 = 100;
     }
     //Yボタン
-    if(buttons[3])
+    if(msg.buttons[3])
     {
       V1 = -100;
       V2 = -100;
@@ -47,9 +47,9 @@ private:
     }
 
     //make_target関数を使用
-    auto message1 = omuni::robomas_utils::make_target(V1);
-    auto message2 = omuni::robomas_utils::make_target(V2);
-    auto message3 = omuni::robomas_utils::make_target(V3);
+    auto message1 = harurobo2::robomas_utils::make_target(V1);
+    auto message2 = harurobo2::robomas_utils::make_target(V2);
+    auto message3 = harurobo2::robomas_utils::make_target(V3);
 
     //メッセージをrobomasにパブリッシュ
     omuni1_->publish(message1);

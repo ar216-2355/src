@@ -18,15 +18,16 @@ INCLUDE_DIRECTORIES(
   include
 )
 
-add_executable(can_send src/can_send.cpp)
-ament_target_dependencies(can_send
+add_executable(harurobo_main src/harurobo_main.cpp)
+ament_target_dependencies(
+  harurobo_main
   rclcpp
   sensor_msgs
   robomas_plugins
 )
 
 install(TARGETS
-  can_send
+  harurobo_main
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
