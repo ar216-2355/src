@@ -6,9 +6,9 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "robomas_plugins/msg/frame.hpp"
-#include "can_conection/can_conection_utils.hpp"
+#include "harurobo_package/harurobo_package_utils.hpp"
 
-class Can_send : public rclcpp::Node
+class Harurobo2 : public rclcpp::Node
 {
 private:
   void controller_callback(const sensor_msgs::msg::Joy & msg) const
@@ -34,10 +34,10 @@ private:
   } 
   
 public:
-  Can_send()
-  : Node("can_send")
+  Harurobo2()
+  : Node("harurobo2")
   {
-    this->controller_ = this->create_subscription<sensor_msgs::msg::Joy>("joy", 10, std::bind(&Can_send::controller_callback, this, std::placeholders::_1));
+    this->controller_ = this->create_subscription<sensor_msgs::msg::Joy>("joy", 10, std::bind(&Harurobo2::controller_callback, this, std::placeholders::_1));
     this->can_setting_ = this->create_publisher<robomas_plugins::msg::Frame>("robomas_can_tx", 10);
   }
 
@@ -48,7 +48,7 @@ public:
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<Can_send>());
+  rclcpp::spin(std::make_shared<Harurobo2>());
   rclcpp::shutdown();
   return 0;
 }
