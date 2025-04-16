@@ -13,24 +13,48 @@ class Harurobo2 : public rclcpp::Node
 private:
   void controller_callback(const sensor_msgs::msg::Joy & msg) const
   {
-    if(msg.buttons[7]){
-      can_setting_->publish(can_conection::solenoid_utils::to_can_mode(0x250,1));
+    //startボタンで活動モード
+    if(msg.buttons[7])
+    {
+      omuni_setting_->publish(omuni::robomas_utils::to_velocity_mode(0));
+      omuni_setting_->publish(omuni::robomas_utils::to_velocity_mode(1));
+      omuni_setting_->publish(omuni::robomas_utils::to_velocity_mode(2));
     }
-    else if(msg.buttons[6]){
-      can_setting_->publish(can_conection::solenoid_utils::to_can_mode(0x250,0));
+    //backボタンで停止モード
+    if(msg.buttons[6])
+    {
+      omuni_setting_->publish(omuni::robomas_utils::to_disable_mode(0));
+      omuni_setting_->publish(omuni::robomas_utils::to_disable_mode(1));
+      omuni_setting_->publish(omuni::robomas_utils::to_disable_mode(2));
     }
-    if(msg.buttons[2]){
-      can_setting_->publish(can_conection::solenoid_utils::to_can_mode(0x251,1));
-    }//エアシリンダー
-    else if(msg.buttons[3]){
-      can_setting_->publish(can_conection::solenoid_utils::to_can_mode(0x251,0));
-    }//エアシリンダー
-    if(msg.buttons[10]){
-      can_setting_->publish(can_conection::solenoid_utils::to_can_mode(0x252,1));
-    }//LED
-    else if(msg.buttons[9]){
-      can_setting_->publish(can_conection::solenoid_utils::to_can_mode(0x252,0));
-    }//LED
+
+    //オムニそれぞれの速度変数を指定
+    float V1, V2, V3 = 0;
+
+    //Xボタン
+    if(buttons[2])
+    {
+      V1 = 100;
+      V2 = 100;
+      V3 = 100;
+    }
+    //Yボタン
+    if(buttons[3])
+    {
+      V1 = -100;
+      V2 = -100;
+      V3 = -100;
+    }
+
+    //make_target関数を使用
+    auto message1 = omuni::robomas_utils::make_target(V1);
+    auto message2 = omuni::robomas_utils::make_target(V2);
+    auto message3 = omuni::robomas_utils::make_target(V3);
+
+    //メッセージをrobomasにパブリッシュ
+    omuni1_->publish(message1);
+    omuni2_->publish(message2);
+    omuni3_->publish(message3);
   } 
   
 public:
@@ -38,11 +62,17 @@ public:
   : Node("harurobo2")
   {
     this->controller_ = this->create_subscription<sensor_msgs::msg::Joy>("joy", 10, std::bind(&Harurobo2::controller_callback, this, std::placeholders::_1));
-    this->can_setting_ = this->create_publisher<robomas_plugins::msg::Frame>("robomas_can_tx", 10);
+    this->omuni1_ = this->create_publisher<robomas_plugins::msg::RobomasTarget>("robomas_target1", 10);
+    this->omuni2_ = this->create_publisher<robomas_plugins::msg::RobomasTarget>("robomas_target2", 10);
+    this->omuni3_ = this->create_publisher<robomas_plugins::msg::RobomasTarget>("robomas_target3", 10);
+    this->omuni_setting_  = this->create_publisher<robomas_plugins::msg::RobomasFrame>("robomas_frame", 10);
   }
 
   rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr controller_;
-  rclcpp::Publisher<robomas_plugins::msg::Frame>::SharedPtr can_setting_;
+  rclcpp::Publisher<robomas_plugins::msg::RobomasTarget>::SharedPtr omuni1_;
+  rclcpp::Publisher<robomas_plugins::msg::RobomasTarget>::SharedPtr omuni2_;
+  rclcpp::Publisher<robomas_plugins::msg::RobomasTarget>::SharedPtr omuni3_;
+  rclcpp::Publisher<robomas_plugins::msg::RobomasFrame>::SharedPtr omuni_setting_;
 };
 
 int main(int argc, char * argv[])
