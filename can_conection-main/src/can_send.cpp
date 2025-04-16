@@ -33,7 +33,6 @@ private:
     }//LED
   } 
   
-
 public:
   Can_send()
   : Node("can_send")
