@@ -30,7 +30,7 @@ private:
 
     //sokudono saidaiti
     int max_v = 100;
-    int max_r = 100;
+    int max_r = 10;
 
     //オムニそれぞれの速度変数を指定
     float v1 = max_v, v2 = max_v, v3 = max_v;
