@@ -28,14 +28,15 @@ private:
       omuni_setting_->publish(harurobo2::robomas_utils::to_disable_mode(2));
     }
 
-    //オムニそれぞれの速度変数を指定
-    float v1, v2, v3;
     //sokudono saidaiti
     int max_v = 100;
 
-    v1 = msg.axes[3];
-    v2 = msg.axes[3] * (-0.5) + msg.axes[4] * (-0.866);
-    v3 = msg.axes[3] * (-0.5) + msg.axes[4] * 0.866;
+    //オムニそれぞれの速度変数を指定
+    float v1 = max_v, v2 = max_v, v3 = max_v;
+
+    v1 *= msg.axes[3];
+    v2 *= msg.axes[3] * (-0.5) + msg.axes[4] * (-0.866);
+    v3 *= msg.axes[3] * (-0.5) + msg.axes[4] * 0.866;
 
     //make_target関数を使用
     auto message1 = harurobo2::robomas_utils::make_target(v1);
