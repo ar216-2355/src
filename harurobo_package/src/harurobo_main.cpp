@@ -31,19 +31,24 @@ private:
     //オムニそれぞれの速度変数を指定
     float V1, V2, V3 = 0;
 
-    //Xボタン
+    
     if(msg.buttons[2])
     {
       V1 = 100;
       V2 = 100;
       V3 = 100;
-    }
-    //Yボタン
-    if(msg.buttons[3])
+    }//Xボタン
+    else if(msg.buttons[3])
     {
-      V1 = -100;
-      V2 = -100;
-      V3 = -100;
+      V1 = -50;
+      V2 = -50;
+      V3 = -50;
+    }//Yボタン
+    else
+    {
+      V1 = 0;
+      V2 = 0;
+      V3 = 0;
     }
 
     //make_target関数を使用
