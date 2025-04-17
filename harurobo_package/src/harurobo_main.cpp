@@ -29,32 +29,18 @@ private:
     }
 
     //オムニそれぞれの速度変数を指定
-    float V1, V2, V3 = 0;
+    float v1, v2, v3;
+    //sokudono saidaiti
+    int max_v = 100;
 
-    
-    if(msg.buttons[2])
-    {
-      V1 = 100;
-      V2 = 100;
-      V3 = 100;
-    }//Xボタン
-    else if(msg.buttons[3])
-    {
-      V1 = -50;
-      V2 = -50;
-      V3 = -50;
-    }//Yボタン
-    else
-    {
-      V1 = 0;
-      V2 = 0;
-      V3 = 0;
-    }
+    v1 = msg.axes[3];
+    v2 = msg.axes[3] * (-0.5) + msg.axes[4] * (-0.866);
+    v3 = msg.axes[3] * (-0.5) + msg.axes[4] * 0.866;
 
     //make_target関数を使用
-    auto message1 = harurobo2::robomas_utils::make_target(V1);
-    auto message2 = harurobo2::robomas_utils::make_target(V2);
-    auto message3 = harurobo2::robomas_utils::make_target(V3);
+    auto message1 = harurobo2::robomas_utils::make_target(v1);
+    auto message2 = harurobo2::robomas_utils::make_target(v2);
+    auto message3 = harurobo2::robomas_utils::make_target(v3);
 
     //メッセージをrobomasにパブリッシュ
     omuni1_->publish(message1);
