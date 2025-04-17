@@ -35,9 +35,9 @@ private:
     //オムニそれぞれの速度変数を指定
     float v1 = max_v, v2 = max_v, v3 = max_v;
 
-    v1 *= msg.axes[3] + max_r * (msg.axes[5] - msg.axes[2]);
-    v2 *= msg.axes[3] * (-0.5) + msg.axes[4] * (-0.866) + max_r * (msg.axes[5] - msg.axes[2]);
-    v3 *= msg.axes[3] * (-0.5) + msg.axes[4] * 0.866 + max_r * (msg.axes[5] - msg.axes[2]);
+    v1 *= msg.axes[3] + max_r * (msg.axes[2] - msg.axes[5]);
+    v2 *= msg.axes[3] * (-0.5) + msg.axes[4] * (-0.866) + max_r * (msg.axes[2] - msg.axes[5]);
+    v3 *= msg.axes[3] * (-0.5) + msg.axes[4] * 0.866 + max_r * (msg.axes[2] - msg.axes[5]);
 
     //make_target関数を使用
     auto message1 = harurobo2::robomas_utils::make_target(v1);
